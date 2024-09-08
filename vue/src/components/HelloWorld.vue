@@ -9,8 +9,6 @@
     <p v-show="flag">dhaisuhdiahbsiudh</p>
     <button v-on:click="change">change</button>
     <!-- <p v-for="item in 5" :key="item.id">this</p> -->
-    让鼠标移入这个元素的时候一直执行t函数
-
     <p class="tim" :title="time" @mouseover="start" @mouseout="stop">this is time</p>
     <button @click="t">{{ time }}</button>
   </div>
