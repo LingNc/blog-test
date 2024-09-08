@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test_blog?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 3401187804
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+#  data:
+#    redis:
+#      host: shiyilink.top
+#      password: xxxxxxx
+  application:
+    name: blog001
+server:
+  port: 7777
+  tomcat:
+    uri-encoding: UTF-8
+    max-http-header-size: 8096
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: deFlag
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      id-type: auto
+#oss:
+#  accessKey: 2oYQkpKRVacb21BGWh67Xta_HZdW-l8zR1JqoBPW
+#  secretKey: NmzJxj0437Ygy6x3M4IPkva7ZSx88OAk4lVmW2iG
+#  bucket: shiyioblog
+#  httpUrl: shqf3oy8q.hb-bkt.clouddn.com
