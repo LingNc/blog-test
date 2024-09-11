@@ -5,6 +5,11 @@ spring:
     password: 3401187804
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
+  mail:
+    host: smtp.163.com
+    username: a17388110647@163.com
+    password: HXHWFVQNTGRKIHHO
+#    port: 25
   servlet:
     multipart:
       max-file-size: 20MB
@@ -16,7 +21,7 @@ spring:
   application:
     name: blog001
 server:
-  port: 7777
+  port: 8081
   tomcat:
     uri-encoding: UTF-8
     max-http-header-size: 8096
