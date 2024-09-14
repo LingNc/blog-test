@@ -32,6 +32,14 @@ public interface UserService extends IService<User> {
     ResponseResult updateUserArticle(ArticleDto articleDto);
 
     ResponseResult deleteUserArticle(Long id);
+
+    ResponseResult history(Integer pageNum, Integer pageSize);
+
+    ResponseResult getFans(Integer id);
+
+    ResponseResult getConcern(Integer id);
+
+    ResponseResult concern(Integer id);
 }
 
 

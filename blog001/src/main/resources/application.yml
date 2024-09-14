@@ -34,8 +34,8 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
       id-type: auto
-#oss:
-#  accessKey: 2oYQkpKRVacb21BGWh67Xta_HZdW-l8zR1JqoBPW
-#  secretKey: NmzJxj0437Ygy6x3M4IPkva7ZSx88OAk4lVmW2iG
-#  bucket: shiyioblog
-#  httpUrl: shqf3oy8q.hb-bkt.clouddn.com
+oss:
+  accessKey: 2oYQkpKRVacb21BGWh67Xta_HZdW-l8zR1JqoBPW
+  secretKey: NmzJxj0437Ygy6x3M4IPkva7ZSx88OAk4lVmW2iG
+  bucket: shiyitestblog
+  httpUrl: sjsj5druq.hb-bkt.clouddn.com

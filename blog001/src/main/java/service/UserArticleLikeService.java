@@ -1,6 +1,7 @@
 package service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.blog.ResponseResult;
 import com.blog.entry.UserArticleLike;
 
 
@@ -12,6 +13,11 @@ import com.blog.entry.UserArticleLike;
  */
 public interface UserArticleLikeService extends IService<UserArticleLike> {
 
+    ResponseResult like(Long id);
+
+    ResponseResult checkLike(Long id);
+
+    ResponseResult deleteLike(Long id);
 }
 
 

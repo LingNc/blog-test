@@ -7,10 +7,7 @@ import com.blog.ResponseResult;
 import com.blog.entry.*;
 import com.blog.entry.dto.ArticleDto;
 import com.blog.entry.dto.UserDto;
-import com.blog.entry.vo.ArticleVo;
-import com.blog.entry.vo.BlogUserLoginVo;
-import com.blog.entry.vo.PageVo;
-import com.blog.entry.vo.UserInfoVo;
+import com.blog.entry.vo.*;
 import com.blog.enums.AppHttpCodeEnum;
 import com.blog.excption.SystemException;
 import com.blog.utils.BeanCopyUtils;
@@ -28,6 +25,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.StringUtils;
 import service.*;
@@ -215,6 +213,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         ArticleVo articleVo = BeanCopyUtils.copyBean(article, ArticleVo.class);
         articleVo.setStar(findStarCount(articleVo.getId()));
         articleVo.setLike(findLikeCount(articleVo.getId()));
+        Integer cacheMapValue = redisCache.getCacheMapValue("Article:viewCount", id.toString());
+        articleVo.setViewCount(Long.valueOf(cacheMapValue));
         return ResponseResult.okResult(articleVo);
     }
 
@@ -231,12 +231,77 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    @Transactional
     public ResponseResult deleteUserArticle(Long id) {
         Article article = articleService.getById(id);
         if(!article.getCreateBy().equals(SecurityUtils.getUserId())) {
             throw new SystemException(AppHttpCodeEnum.NO_OPERATOR_AUTH);
         }
         articleService.removeById(id);
+        LambdaQueryWrapper<UserArticle> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserArticle::getArticleId,id);
+        userArticleService.remove(queryWrapper);
+        return ResponseResult.okResult();
+    }
+
+    @Resource
+    private HistoryService historyService;
+
+    @Resource
+    private ArticleServiceImpl articleServiceImpl;
+
+    @Override
+    public ResponseResult history(Integer pageNum, Integer pageSize) {
+        LambdaQueryWrapper<History> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(History::getUid, SecurityUtils.getUserId());
+        queryWrapper.orderByDesc(History::getCreateTime);
+        List<History> list = historyService.list(queryWrapper);
+        List<Long> articleIds = list.stream().map(History::getArticleId).toList();
+        LambdaQueryWrapper<Article> queryWrapper1 = new LambdaQueryWrapper<>();
+        queryWrapper1.in(articleIds.size()>0, Article::getId, articleIds);
+        Page<Article> page = new Page<>(pageNum, pageSize);
+        articleService.page(page,queryWrapper1);
+        List<Article> articles = page.getRecords();
+        List<ArticleVo2> articleVo2s = BeanCopyUtils.copyBeanList(articles, ArticleVo2.class);
+        List<ArticleVo2> list1 = articleVo2s.stream().map(a -> {
+            a.setLike(findLikeCount(a.getId()));
+            a.setStar(findStarCount(a.getId()));
+            a.setCreateName(articleServiceImpl.findCreateNameByArticleId(a.getId()));
+            return a;
+        }).toList();
+        return ResponseResult.okResult(new PageVo(list1,page.getTotal()));
+    }
+
+    @Override
+    public ResponseResult getFans(Integer id) {
+        LambdaQueryWrapper<UserAndUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserAndUser::getConcernedId,id);
+        List<UserAndUser> list = userAndUserService.list(queryWrapper);
+        List<Integer> userIds = list.stream().map(UserAndUser::getUid).toList();
+        LambdaQueryWrapper<User> queryWrapper1 = new LambdaQueryWrapper<>();
+        queryWrapper1.in(User::getId, userIds);
+        List<User> list1 = list(queryWrapper1);
+        List<UserVo> userVos = BeanCopyUtils.copyBeanList(list1, UserVo.class);
+        return ResponseResult.okResult(userVos);
+    }
+
+    @Override
+    public ResponseResult getConcern(Integer id) {
+        LambdaQueryWrapper<UserAndUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserAndUser::getUid,id);
+        List<UserAndUser> list = userAndUserService.list(queryWrapper);
+        List<Integer> userIds = list.stream().map(UserAndUser::getConcernedId).toList();
+        LambdaQueryWrapper<User> queryWrapper1 = new LambdaQueryWrapper<>();
+        queryWrapper1.in(User::getId, userIds);
+        List<User> list1 = list(queryWrapper1);
+        List<UserVo> userVos = BeanCopyUtils.copyBeanList(list1, UserVo.class);
+        return ResponseResult.okResult(userVos);
+    }
+
+    @Override
+    public ResponseResult concern(Integer id) {
+        UserAndUser userAndUser = new UserAndUser(SecurityUtils.getUserId(), id);
+        userAndUserService.save(userAndUser);
         return ResponseResult.okResult();
     }
 
