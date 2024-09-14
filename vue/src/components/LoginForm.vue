@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name:'LoginForm',
+  name: 'LoginForm',
   data() {
     return {
       username: '',
@@ -27,16 +27,36 @@ export default {
     };
   },
   methods: {
-    handleSubmit() {
-      // 调用API验证用户名和密码
-      if (this.username === 'admin' && this.password === 'password') {
-        // this.$router.push('/'); // 登录成功后跳转
-        console.log('login success');
-      } else {
+    async handleSubmit() {
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            userName: this.username,
+            password: this.password
+          })
+        });
+
+        const data = await response.json();
+        if (data.code === 200) {
+          // 登录成功，处理响应数据
+          console.log('login success', data);
+          // 存储 token 到 localStorage 或 Vuex
+          localStorage.setItem('token', data.data.token);
+          // 跳转到首页或其他页面
+          this.$router.push('/');
+        } else {
         this.errorMessage = 'Invalid username or password';
       }
+      } catch (error) {
+        console.error('Login failed', error);
+        this.errorMessage = 'An error occurred during login';
     }
   }
+}
 };
 </script>
 
