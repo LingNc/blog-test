@@ -1,36 +1,33 @@
 package com.blog.entry;
 
+import java.util.Date;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.util.Date;
-
 /**
- * (UserArticle)表实体类
+ * (History)表实体类
  *
  * @author makejava
- * @since 2024-09-11 14:44:31
+ * @since 2024-09-12 18:15:50
  */
 @SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("shiyi_user_article")
-public class UserArticle  {
+@TableName("shiyi_history")
+public class History  {
 
-//用户id
+
     private Integer uid;
 
     private Long articleId;
 
-
     private Date createTime;
+
+
+
 }
 
 

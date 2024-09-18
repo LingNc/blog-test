@@ -10,49 +10,40 @@ import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 /**
- * (Article)表实体类
+ * (Comment)表实体类
  *
  * @author makejava
- * @since 2024-09-10 21:45:14
+ * @since 2024-09-13 14:26:01
  */
 @SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("shiyi_article")
-
-public class Article  {
+@TableName("shiyi_comment")
+public class Comment  {
 @TableId
     private Long id;
 
 
-    private String title;
+    private Long articleId;
+//根评论
+    private Long rootId;
 
     private String content;
 
-    private Long categoryId;
-//缩略图
-    private String thumbnail;
-//1为置顶
-    private String isTop;
+    private Integer toCommentUserId;
+
+    private Integer toCommentId;
+
+    @TableField(fill = FieldFill.INSERT)
+    private Integer createBy;
 
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
-
-    @TableField(fill = FieldFill.INSERT)
-    private Long createBy;
-
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
 //0为存在
     private Integer delFlag;
 
-    private Long viewCount;
 
-    public Article(Long id,Long viewCount){
-        this.id = id;
-        this.viewCount = viewCount;
-    }
 
 }
 

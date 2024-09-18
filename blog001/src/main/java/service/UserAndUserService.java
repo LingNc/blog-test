@@ -1,6 +1,7 @@
 package service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.blog.ResponseResult;
 import com.blog.entry.UserAndUser;
 
 
@@ -12,6 +13,9 @@ import com.blog.entry.UserAndUser;
  */
 public interface UserAndUserService extends IService<UserAndUser> {
 
+    ResponseResult checkConcern(Integer id);
+
+    ResponseResult deleteConcern(Integer id);
 }
 
 
