@@ -1,16 +1,15 @@
 <template>
   <div class="about">
     <h1>This is an about page</h1>
-    <LoginForm />
   </div>
 </template>
 
-<script>
-import LoginForm from '@/components/LoginForm.vue';
-
-export default {
-  components: {
-    LoginForm
+<style>
+@media (min-width: 1024px) {
+  .about {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
   }
-};
-</script>
+}
+</style>
