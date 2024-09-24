@@ -13,7 +13,7 @@ export default {
     ],
     // daisyUI config (optional - here are the default values)
     daisyui: {
-        themes: ["light","dark"], // false: 只有白天和黑暗模式 | true: 所有主题 | array: 特定的主题列表，例如 ["light", "dark", "cupcake"]
+        themes: ["lofi","black"], // false: 只有白天和黑暗模式 | true: 所有主题 | array: 特定的主题列表，例如 ["light", "dark", "cupcake"]
         darkTheme: "dark", // 选择另一个主题作为系统自动黑暗模式的主题。默认是黑暗模式主题（或者自定义的主题名字是 dark）
         base: true, // 如果设为 true，一些基础样式会被添加
         styled: false, // 如果设置为 true，组件会有默认的颜色和样式

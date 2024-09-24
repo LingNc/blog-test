@@ -1,41 +1,35 @@
 <template>
   <div class="card flex justify-center">
-    <Button label="Show" @click="visible = true" />
-    <Dialog
-      v-model:visible="visible"
-      modal
-      header="Edit Profile"
-      :style="{ width: '25rem' }"
-    >
-      <span class="text-surface-500 dark:text-surface-400 block mb-8"
-        >Update your information.</span
-      >
-      <div class="flex items-center gap-4 mb-4">
-        <label for="username" class="font-semibold w-24">Username</label>
-        <InputText id="username" class="flex-auto" autocomplete="off" />
-      </div>
-      <div class="flex items-center gap-4 mb-8">
-        <label for="email" class="font-semibold w-24">Email</label>
-        <InputText id="email" class="flex-auto" autocomplete="off" />
-      </div>
-      <div class="flex justify-end gap-2">
-        <Button
-          type="button"
-          label="Cancel"
-          severity="secondary"
-          @click="visible = false"
-        ></Button>
-        <Button type="button" label="Save" @click="visible = false"></Button>
-      </div>
+    <Button class="w-16" label="Show" @click="vis_sign_in = true" />
+    <Dialog v-model:visible="vis_sign_in" modal :style="{ width: '25rem' }">
+      <template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+          <span class="font-bold whitespace-nowrap text-2xl">Blog-test</span>
+        </div>
+      </template>
+      <span class="text-surface-500 dark:text-surface-400 block mb-8">登录账号</span>
+      <sign_in />
+    </Dialog>
+    <Dialog v-model:visible="vis_sign_up" modal :style="{ width: '25rem' }">
+      <template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+          <span class="font-bold whitespace-nowrap text-2xl">Blog-test</span>
+        </div>
+      </template>
+      <span class="text-surface-500 dark:text-surface-400 block mb-8">注册账号</span>
+      <sign_up />
     </Dialog>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import Button from "primevue/button";
 import Dialog from "primevue/dialog";
-import InputText from "primevue/inputtext";
+import Button from "primevue/button";
+import sign_in from "./Login/sign_in.vue";
+import sign_up from "./Login/sign_up.vue";
 
-const visible = ref(false);
+const vis_sign_in = ref(false);
+const vis_sign_up = ref(false);
+const value = ref("");
 </script>
