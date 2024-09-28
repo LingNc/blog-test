@@ -1,6 +1,6 @@
 <template>
   <div class="card flex justify-center">
-    <Button class="w-16" label="Show" @click="vis_sign_in = true" />
+    <Button class="w-16" label="登录" @click="vis_sign_in = true" />
     <Dialog v-model:visible="vis_sign_in" modal :style="{ width: '25rem' }">
       <template #header>
         <div class="inline-flex items-center justify-center gap-2">
